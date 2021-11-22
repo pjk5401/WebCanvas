@@ -6,19 +6,53 @@
   <body>
     <script>
       // Create the application helper and add its render target to the page
-      let app = new PIXI.Application({ width: 640, height: 360 });
+      let app = new PIXI.Application({ 
+        width: 800, height: 600, backgroundColor : 0x000000,
+        resolution: window.devicePixelRatio || 1,
+      });
       document.body.appendChild(app.view);
 
       // Create the sprite and add it to the stage
       let sprite = PIXI.Sprite.from('sample.png');
+      
+      sprite.interactive = true;
+      
+      sprite
+        .on('pointerdown', onDragStart)
+        .on('pointerup', onDragEnd)
+        .on('pointerupoutside', onDragEnd)
+        .on('pointermove', onDragMove);
+
+      sprite.x = 400;
+      sprite.y = 300;
+      
       app.stage.addChild(sprite);
 
-      // Add a ticker callback to move the sprite back and forth
-      let elapsed = 0.0;
-      app.ticker.add((delta) => {
-        elapsed += delta;
-        sprite.x = 100.0 + Math.cos(elapsed/50.0) * 100.0;
-      });
+      function onDragStart(event) {
+        // store a reference to the data
+        // the reason for this is because of multitouch
+        // we want to track the movement of this particular touch
+        this.data = event.data;
+        this.alpha = 0.5;
+        this.dragging = true;
+      }
+
+      function onDragEnd() {
+        this.alpha = 1;
+        this.dragging = false;
+        // set the interaction data to null
+        this.data = null;
+      }
+
+
+      function onDragMove(){
+        if(this.dragging){
+          const newPosition = this.data.getLocalPosition(this.parent);
+          this.x = newPosition.x;
+          this.y = newPosition.y;
+        }
+      }
+      
     </script>
   </body>
 </html>
