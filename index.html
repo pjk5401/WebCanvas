@@ -25,8 +25,15 @@
 
       sprite.x = 400;
       sprite.y = 300;
+
+      sprite.scale.x = 100;
+      sprite.scale.y = 100;
       
       app.stage.addChild(sprite);
+
+      app.ticker.add((delta) => {
+        sprite.rotation += 0.1 * delta;
+      });
 
       function onDragStart(event) {
         // store a reference to the data
