@@ -9,6 +9,7 @@
 
         function setup() {  
           createCanvas(windowWidth/2, windowHeight/2);
+          background(250, 250, 250);
           img = loadImage('sample.png');
           imageMode(CENTER);
         }
@@ -19,10 +20,6 @@
             rotate(millis()/200);
             image(img, 0, 0);  
           }
-        }
-
-        function windowResized() {
-          resizeCanvas(windowWidth/2, windowHeight/2);
         }
       </script>
     </main>
